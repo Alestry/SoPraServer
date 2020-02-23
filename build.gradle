@@ -97,3 +97,4 @@ project.tasks["sonarqube"].dependsOn {
 }
 
 defaultTasks 'bootJar', 'build'
+/*test*/

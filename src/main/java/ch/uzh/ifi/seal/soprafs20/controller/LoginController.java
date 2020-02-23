@@ -12,20 +12,20 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * User Controller
- * This class is responsible for handling all REST request that are related to the user.
+ * Login Controller
+ * This class is responsible for handling all REST request that are related to the login.
  * The controller will receive the request and delegate the execution to the UserService and finally return the result.
  */
 @RestController
-public class UserController {
+public class LoginController {
 
     private final UserService userService;
 
-    UserController(UserService userService) {
+    LoginController(UserService userService) {
         this.userService = userService;
     }
 
-    @GetMapping("/users")
+    @GetMapping("/login")
     @ResponseStatus(HttpStatus.OK)
     @ResponseBody
     public List<UserGetDTO> getAllUsers() {
@@ -40,7 +40,7 @@ public class UserController {
         return userGetDTOs;
     }
 
-    @PostMapping("/users")
+    @PostMapping("/login")
     @ResponseStatus(HttpStatus.CREATED)
     @ResponseBody
     public UserGetDTO createUser(@RequestBody UserPostDTO userPostDTO) {
