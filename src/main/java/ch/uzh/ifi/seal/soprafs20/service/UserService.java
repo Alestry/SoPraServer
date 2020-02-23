@@ -75,18 +75,18 @@ public class UserService {
 
     /**
      * This method is the login authenticator. It checks if the login information combination provided by the input
-     * is in the database or not. It will return the corresponding user object if yes, null if not.
+     * is in the database or not. It will return the corresponding user object if yes, throws an exception if not.
      *
      * @param providedUser
      */
-    private User authenticateUser(User providedUser){
+    public User authenticateUser(User providedUser){
         User userByUsername = userRepository.findByUsername(providedUser.getUsername());
         User userByName = userRepository.findByName(providedUser.getName());
 
-        if(userByUsername == userByName){
+        if(userByUsername == userByName && userByName != null){
             return userByName;
         }else{
-            return null;
+            throw new SopraServiceException("This Username and Name combination doesn't exist. Try registering an account.");
         }
     }
 

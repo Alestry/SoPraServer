@@ -43,15 +43,15 @@ public class LoginController {
     @PostMapping("/login")
     @ResponseStatus(HttpStatus.CREATED)
     @ResponseBody
-    public UserGetDTO createUser(@RequestBody UserPostDTO userPostDTO) {
+    public UserGetDTO authenticateUser(@RequestBody UserPostDTO userPostDTO) {
         // convert API user to internal representation
         User userInput = DTOMapper.INSTANCE.convertUserPostDTOtoEntity(userPostDTO);
 
-        // create user
-        User createdUser = userService.createUser(userInput);
+        // authenticate user
+        User authenticatedUser = userService.authenticateUser(userInput);
 
         // convert internal representation of user back to API
-        return DTOMapper.INSTANCE.convertEntityToUserGetDTO(createdUser);
+        return DTOMapper.INSTANCE.convertEntityToUserGetDTO(authenticatedUser);
     }
 
 }
