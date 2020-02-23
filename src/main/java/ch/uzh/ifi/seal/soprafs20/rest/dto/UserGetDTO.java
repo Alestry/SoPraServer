@@ -8,6 +8,7 @@ public class UserGetDTO {
     private String name;
     private String username;
     private UserStatus status;
+    private String date;
 
     public Long getId() {
         return id;
@@ -40,4 +41,8 @@ public class UserGetDTO {
     public void setStatus(UserStatus status) {
         this.status = status;
     }
+
+    public void setDate(String date){this.date = date;}
+
+    public String getDate(){return date;}
 }
