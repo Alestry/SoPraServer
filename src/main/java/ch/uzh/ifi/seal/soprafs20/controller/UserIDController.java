@@ -8,22 +8,28 @@ import ch.uzh.ifi.seal.soprafs20.service.UserService;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.Optional;
-
 /**
  * UserID controller
  */
 @RestController
 public class UserIDController {
 
-    //private final UserService userService;
+    private final UserService userService;
 
-    //UserIDController(UserService userService ){this.userService = userService;}
+    UserIDController(UserService userService ){this.userService = userService;}
 
-    @GetMapping("/userid:id")
+    /**
+     * This method returns the whole user object when called by its ID.
+     * @param
+     * @return
+     */
+    @GetMapping("/profile")
     @ResponseStatus(HttpStatus.OK)
     @ResponseBody
-    public UserGetDTO gotUser(@RequestBody long id){
-        return null;
+    public /*UserGetDTO*/ String gotUser(){
+        //*User*/String retUser = userService.userByID(id);
+        //UserGetDTO retDTOUser = DTOMapper.INSTANCE.convertEntityToUserGetDTO(retUser);
+        //return retDTOUser;
+        return "comeon";
     }
 }
