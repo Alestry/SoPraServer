@@ -8,6 +8,8 @@ import ch.uzh.ifi.seal.soprafs20.service.UserService;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.Optional;
+
 /**
  * UserID controller
  */
@@ -20,16 +22,28 @@ public class UserIDController {
 
     /**
      * This method returns the whole user object when called by its ID.
-     * @param
+     * @param id
      * @return
      */
-    @GetMapping("/profile")
+    @GetMapping("/users/{id}")
     @ResponseStatus(HttpStatus.OK)
     @ResponseBody
-    public /*UserGetDTO*/ String gotUser(){
-        //*User*/String retUser = userService.userByID(id);
-        //UserGetDTO retDTOUser = DTOMapper.INSTANCE.convertEntityToUserGetDTO(retUser);
+    public /*UserGetDTO*/ User gotUser(/*@RequestBody UserPostDTO user*/@PathVariable long id){
+        User retUser = userService.userByID(id);
+        UserGetDTO retDTOUser = DTOMapper.INSTANCE.convertEntityToUserGetDTO(retUser);
         //return retDTOUser;
-        return "comeon";
+        return retUser;
     }
+
+    /**
+     * This is the method that calls userService to change the user's birthday.
+     */
+    @PutMapping("users/{id}")
+    @ResponseStatus(HttpStatus.OK)
+    @ResponseBody
+    public String setBirthday(@RequestBody String birthdate, @PathVariable long id){
+        String returnBirthday = userService.updateBirthday(birthdate, id);
+        return returnBirthday;
+    }
+
 }

@@ -1,5 +1,6 @@
 package ch.uzh.ifi.seal.soprafs20.controller;
 
+import ch.uzh.ifi.seal.soprafs20.constant.UserStatus;
 import ch.uzh.ifi.seal.soprafs20.entity.User;
 import ch.uzh.ifi.seal.soprafs20.rest.dto.UserGetDTO;
 import ch.uzh.ifi.seal.soprafs20.rest.dto.UserPostDTO;
@@ -40,12 +41,15 @@ public class LoginController {
         return userGetDTOs;
     }
 
-    @PostMapping("/login")
+    @PutMapping("/login")
     @ResponseStatus(HttpStatus.CREATED)
     @ResponseBody
     public UserGetDTO authenticateUser(@RequestBody UserPostDTO userPostDTO){
         // convert API user to internal representation
         User userInput = DTOMapper.INSTANCE.convertUserPostDTOtoEntity(userPostDTO);
+
+        //Set User Status to ONLINE
+        userService.logInUser(userInput);
 
         // authenticate user
         User authenticatedUser = userService.authenticateUser(userInput);
@@ -53,4 +57,5 @@ public class LoginController {
         // convert internal representation of user back to API
         return DTOMapper.INSTANCE.convertEntityToUserGetDTO(authenticatedUser);
     }
+
 }
