@@ -46,7 +46,7 @@ public class LoginController {
      * @return
      */
     @PutMapping("/login")
-    @ResponseStatus(HttpStatus.CREATED)
+    @ResponseStatus(HttpStatus.OK)
     @ResponseBody
     public UserGetDTO authenticateUser(@RequestBody UserPostDTO userPostDTO){
         // convert API user to internal representation

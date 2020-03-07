@@ -4,6 +4,7 @@ import ch.uzh.ifi.seal.soprafs20.constant.UserStatus;
 import ch.uzh.ifi.seal.soprafs20.entity.User;
 import ch.uzh.ifi.seal.soprafs20.exceptions.SopraServiceException;
 import ch.uzh.ifi.seal.soprafs20.rest.dto.UserPostDTO;
+import ch.uzh.ifi.seal.soprafs20.rest.mapper.DTOMapper;
 import ch.uzh.ifi.seal.soprafs20.service.UserService;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -15,16 +16,19 @@ import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.request.MockHttpServletRequestBuilder;
+import org.springframework.web.server.ResponseStatusException;
+import org.springframework.http.HttpStatus;
 
+import javax.print.DocFlavor;
 import java.util.Collections;
 import java.util.List;
 
 import static org.hamcrest.Matchers.*;
 import static org.mockito.BDDMockito.given;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
+import static org.junit.jupiter.api.Assertions.*;
 
 /**
  * UserControllerTest
@@ -92,6 +96,58 @@ public class UserControllerTest {
                 .andExpect(jsonPath("$.name", is(user.getName())))
                 .andExpect(jsonPath("$.username", is(user.getUsername())))
                 .andExpect(jsonPath("$.status", is(user.getStatus().toString())));
+    }
+
+    @Test
+    public void credentialsExistWhenMakingUserReturnsConflict() throws Exception{
+        //given
+        //Existing user
+        User testUser = new User();
+        testUser.setId(1L);
+        testUser.setName("Test Name");
+        testUser.setUsername("Test Username");
+        testUser.setToken("Test Token");
+        testUser.setStatus(UserStatus.ONLINE);
+
+        //User to be created
+        UserPostDTO testUserPostDTO = new UserPostDTO();
+        testUserPostDTO.setName("Test Name");
+        testUserPostDTO.setUsername("Test Username");
+
+        //Given
+        given(userService.createUser(Mockito.any())).willThrow(new ResponseStatusException(HttpStatus.CONFLICT));
+        //When
+        MockHttpServletRequestBuilder postRequest = post("/users").contentType(MediaType.APPLICATION_JSON).content(asJsonString(testUserPostDTO));
+        //Then
+        mockMvc.perform(postRequest).andExpect(status().isConflict());
+
+        assertEquals(testUser.getUsername(), testUserPostDTO.getUsername());
+        assertEquals(testUser.getName(), testUserPostDTO.getName());
+    }
+
+    @Test
+    public void loggingOutUserChangesStatusToOffline() throws Exception {
+        //given
+        User testUser = new User();
+        testUser.setId(1L);
+        testUser.setName("Test Name");
+        testUser.setUsername("Test Username");
+        testUser.setToken("Test Token");
+        testUser.setStatus(UserStatus.ONLINE);
+
+        //Given
+        given(userService.logOutUser(Mockito.any())).willReturn("Test Token");
+        //When
+        MockHttpServletRequestBuilder putRequest = put("/users").contentType(MediaType.APPLICATION_JSON).content("{\"token:\":\"Test Token\"}");
+        //Then
+        /*mockMvc.perform(putRequest).andExpect(status().isOk());
+
+        //Get the returned token
+        String returnToken = userService.logOutUser(testUser.getToken());
+
+        //Now test if the returned token matches the sent one and if the user was indeed logged out
+        assertEquals(returnToken, testUser.getToken());
+        assertEquals(testUser.getStatus(), UserStatus.OFFLINE);*/
     }
 
     /**

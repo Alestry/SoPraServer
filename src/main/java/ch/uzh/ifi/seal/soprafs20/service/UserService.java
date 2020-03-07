@@ -7,8 +7,12 @@ import ch.uzh.ifi.seal.soprafs20.repository.UserRepository;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.client.HttpClientErrorException;
+import org.springframework.web.client.HttpServerErrorException;
 
 import java.util.List;
 import java.util.Optional;
@@ -88,7 +92,7 @@ public class UserService {
         if(userByUserName == userByName && userByName != null){
             return userByName;
         } else{
-            throw new SopraServiceException("This Username and Name combination doesn't exist. Try registering a new Account.");
+            throw new SopraServiceException("That Username and Name combination does not exist.");
         }
     }
 

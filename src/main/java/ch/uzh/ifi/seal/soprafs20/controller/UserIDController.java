@@ -34,7 +34,7 @@ public class UserIDController {
      * @param userId ID of the user we want the birthday set
      */
     @PutMapping("users/{userId}")
-    @ResponseStatus(HttpStatus.OK)
+    @ResponseStatus(HttpStatus.NO_CONTENT)
     @ResponseBody
     public void setBirthday(@RequestBody String newdata, @PathVariable long userId){
 

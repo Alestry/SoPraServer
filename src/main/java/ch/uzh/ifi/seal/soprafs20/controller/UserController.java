@@ -64,6 +64,5 @@ public class UserController {
     public String logOutUser(@PathVariable String token) {
         String returned = userService.logOutUser(token);
         return returned;
-
     }
 }
