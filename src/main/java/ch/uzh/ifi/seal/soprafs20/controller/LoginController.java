@@ -40,6 +40,11 @@ public class LoginController {
         return userGetDTOs;
     }
 
+    /**
+     * This is the login function of the backend. It authenticates the user.
+     * @param userPostDTO
+     * @return
+     */
     @PutMapping("/login")
     @ResponseStatus(HttpStatus.CREATED)
     @ResponseBody

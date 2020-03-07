@@ -17,33 +17,33 @@ public class UserIDController {
 
     /**
      * This method returns the whole user object when called by its ID.
-     * @param id ID of the profile's user
+     * @param userId ID of the profile's user
      * @return returned User
      */
-    @GetMapping("/users/{id}")
+    @GetMapping("/users/{userId}")
     @ResponseStatus(HttpStatus.OK)
     @ResponseBody
-    public User gotUser(@PathVariable long id){
-        User retUser = userService.userByID(id);
+    public User gotUser(@PathVariable long userId){
+        User retUser = userService.userByID(userId);
         return retUser;
     }
 
     /**
      * This is the method that calls userService to change the user's birthday.
      * @param newdata Aggregate data of birthday and username (the same as before if hasn't changed)
-     * @param id ID of the user we want the birthday set
+     * @param userId ID of the user we want the birthday set
      */
-    @PutMapping("users/{id}")
+    @PutMapping("users/{userId}")
     @ResponseStatus(HttpStatus.OK)
     @ResponseBody
-    public void setBirthday(@RequestBody String newdata, @PathVariable long id){
+    public void setBirthday(@RequestBody String newdata, @PathVariable long userId){
 
         String[] temparr = newdata.split("!!!");
         String birthday = temparr[0];
         String username = temparr[1];
 
-        userService.updateBirthday(birthday, id);
-        userService.updateUsername(username, id);
+        userService.updateBirthday(birthday, userId);
+        userService.updateUsername(username, userId);
     }
 
 }
