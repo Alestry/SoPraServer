@@ -125,31 +125,6 @@ public class UserControllerTest {
         assertEquals(testUser.getName(), testUserPostDTO.getName());
     }
 
-    @Test
-    public void loggingOutUserChangesStatusToOffline() throws Exception {
-        //given
-        User testUser = new User();
-        testUser.setId(1L);
-        testUser.setName("Test Name");
-        testUser.setUsername("Test Username");
-        testUser.setToken("Test Token");
-        testUser.setStatus(UserStatus.ONLINE);
-
-        //Given
-        given(userService.logOutUser(Mockito.any())).willReturn("Test Token");
-        //When
-        MockHttpServletRequestBuilder putRequest = put("/users").contentType(MediaType.APPLICATION_JSON).content("{\"token:\":\"Test Token\"}");
-        //Then
-        /*mockMvc.perform(putRequest).andExpect(status().isOk());
-
-        //Get the returned token
-        String returnToken = userService.logOutUser(testUser.getToken());
-
-        //Now test if the returned token matches the sent one and if the user was indeed logged out
-        assertEquals(returnToken, testUser.getToken());
-        assertEquals(testUser.getStatus(), UserStatus.OFFLINE);*/
-    }
-
     /**
      * Helper Method to convert userPostDTO into a JSON string such that the input can be processed
      * Input will look like this: {"name": "Test User", "username": "testUsername"}

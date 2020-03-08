@@ -113,12 +113,12 @@ public class UserService {
     }
 
     public String updateBirthday(String birthday, long id){
-        userRepository.findById(id).get().setBirthdate(birthday);
+        userByID(id).setBirthdate(birthday);
         return birthday;
     }
 
     public String updateUsername(String username, long id){
-        userRepository.findById(id).get().setUsername(username);
+        userByID(id).setUsername(username);
         return username;
     }
 
